@@ -1,5 +1,8 @@
 package gsb;
 
+import gsb.entites.CompteRendu;
+import gsb.modele.ModeleListeCR;
+
 import java.awt.Component;
 
 import javax.swing.JButton;

@@ -1,5 +1,8 @@
 package gsb;
 
+import gsb.entites.Visiteur;
+import gsb.modele.ModeleListeVisiteurs;
+
 import java.awt.Color;
 import java.awt.Component;
 

@@ -1,5 +1,9 @@
 package gsb;
 
+import gsb.controleur.ControleurBoutonConsulterCR;
+import gsb.vue.VueGsb;
+import gsb.vue.VueListeVisiteurs;
+
 import java.awt.Component;
 
 import javax.swing.DefaultCellEditor;
