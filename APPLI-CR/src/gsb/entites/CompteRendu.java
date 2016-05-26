@@ -6,7 +6,7 @@ import java.sql.Date ;
 *
 */
 public class CompteRendu {
-	
+			
 	private String visMatricule ;
 	private int rapNum ;
 	private int praNum ;
@@ -102,6 +102,15 @@ public class CompteRendu {
 
 	public void setEstConsulte(boolean estConsulte) {
 		this.estConsulte = estConsulte;
+	}
+
+	@Override
+	public String toString() {
+		return "CompteRendu : Matricule visiteur: " + visMatricule + ", Rapport numéro: "
+				+ rapNum + ", Praticien: " + praNum + ", Bilan=" + rapBilan
+				+ ", Date de rédaction: " + rapDateRedaction + ", Date de visite: "
+				+ rapDateVisite + ", Motif: " + motifCode + ", Coefficient: "
+				+ coefCode + ", Etat consultation: " + estConsulte + "]";
 	}
 	
 

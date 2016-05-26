@@ -69,4 +69,8 @@ public class EditeurBoutonAfficherCR extends DefaultCellEditor {
 		this.controleur = controleur;
 	}
 
+	public VueListeCR getVue() {
+		return vue;
+	}
+
 }

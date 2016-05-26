@@ -1,11 +1,13 @@
 package gsb.controleur;
 
 import gsb.EditeurBoutonAfficherCR;
+import gsb.entites.CompteRendu;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JTable;
 
 public class ControleurBoutonAfficherCR implements ActionListener {
@@ -58,7 +60,9 @@ public class ControleurBoutonAfficherCR implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		System.out.println("ControleurBoutonAfficherCR::actionPerformed()") ;
 		if(e.getSource() == this.editeur.getBouton()) {
-			
+			CompteRendu compteRendu = this.editeur.getVue().getModeleTabCR().getCompteRendu(this.row);
+			JOptionPane.showMessageDialog(this.vue, compteRendu.toString(),
+					"Rapport de visite n° " + compteRendu.getRapNum() + " du visiteur de matricule " + compteRendu.getVisMatricule(), JOptionPane.DEFAULT_OPTION);
 		}
 	}
 

@@ -1,7 +1,7 @@
 package gsb.modele;
 
+import gsb.Session;
 import gsb.entites.Visiteur;
-import gsb.techniques.Session;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -14,30 +14,23 @@ public class ModeleListeVisiteurs extends AbstractTableModel {
 	
 	private static final long serialVersionUID = 1L;
 	
-	private List<Visiteur> visiteurs = null ;
+	private List<Visiteur> visiteurs ;
 	private final String[] entetes = {"Matricule","Nom","Prénom","Laboratoire", "Consulter CR"} ;
 	
-	public ModeleListeVisiteurs() {
+	public ModeleListeVisiteurs(){
 		super() ;
 		System.out.println("ModeleListeVisiteurs::ModeleListeVisiteurs()") ;
+		
+		this.visiteurs = ModelGsb.getModele().getVisiteursRegion(Session.getSession().getRegionCode());
+		
 	}
 	
-	public List<Visiteur> getVisiteurs() {
-		try {
-			 visiteurs = ModeleGsb.getModeleGsb().getVisiteursRegion(Session.getSession().getRegCode()) ;
-		}
-		catch (SQLException e) {
-			JOptionPane.showMessageDialog(null,e.getMessage()) ;
-			
-			e.printStackTrace();
-		}
-		return visiteurs ;
-	}
+	
 	
 	@Override
 	public int getRowCount() {
 		System.out.println("ModeleListeVisiteurs::getRowCount()") ;
-		return this.getVisiteurs().size() ;
+		return this.visiteurs.size() ;
 	}
 
 	@Override
@@ -98,20 +91,20 @@ public class ModeleListeVisiteurs extends AbstractTableModel {
 		switch(columnIndex) {
 		
 			case 0 : 
-				resultat = this.getVisiteurs().get(rowIndex).getMatricule() ;
+				resultat = this.visiteurs.get(rowIndex).getMatricule() ;
 				break ;
 			
 			case 1 : 
-				resultat = this.getVisiteurs().get(rowIndex).getNom() ;
+				resultat = this.visiteurs.get(rowIndex).getNom() ;
 				break ;
 			
 			case 2 : 
-				resultat = this.getVisiteurs().get(rowIndex).getPrenom() ;
+				resultat = this.visiteurs.get(rowIndex).getPrenom() ;
 				break ;
 			
 			case 3 : 
 				try {
-					resultat = ModeleGsb.getModeleGsb().getNomLabo(this.getVisiteurs().get(rowIndex).getLabCode()) ;
+					resultat = ModelGsb.getModele().getNomLabo(this.visiteurs.get(rowIndex).getLabCode()) ;
 				} catch (SQLException e) {
 					e.printStackTrace();
 				}

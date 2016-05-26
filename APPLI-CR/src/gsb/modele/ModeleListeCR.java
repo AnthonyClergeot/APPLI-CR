@@ -22,9 +22,10 @@ public class ModeleListeCR extends AbstractTableModel {
 		System.out.println("ModeleListeCR::ModeleListeCR()") ;
 	}
 	
-	public List<CompteRendu> getComptesRendus() {
+	public List<CompteRendu> getComptesRendus(String vis_matricule, String mois, String annee) {
+		System.out.println("ModeleListeCR::getComptesRendus("+ vis_matricule + ", " + mois + ", " + annee +")");
 		try {
-			comptesRendus = ModeleGsb.getModeleGsb().getComptesRendusVisiteurs("t60") ;
+			comptesRendus = ModelGsb.getModele().getComptesRendusVisiteurs(vis_matricule, mois, annee) ;
 		}
 		catch (SQLException e) {
 			JOptionPane.showMessageDialog(null,e.getMessage()) ;
@@ -37,7 +38,7 @@ public class ModeleListeCR extends AbstractTableModel {
 	@Override
 	public int getRowCount() {
 		System.out.println("ModeleListeCR::getRowCount()") ;
-		return this.getComptesRendus().size() ;
+		return this.comptesRendus.size() ;
 	}
 
 	@Override
@@ -101,12 +102,12 @@ public class ModeleListeCR extends AbstractTableModel {
 		switch(columnIndex) {
 		
 			case 0 : 
-				resultat = this.getComptesRendus().get(rowIndex).getRapNum() ;
+				resultat = this.comptesRendus.get(rowIndex).getRapNum() ;
 				break ;
 			
 			case 1 : 
 				try {
-					resultat = ModeleGsb.getModeleGsb().getNomPraticien(this.getComptesRendus().get(rowIndex).getPraNum()) ;
+					resultat = ModelGsb.getModele().getNomPraticien(this.comptesRendus.get(rowIndex).getPraNum()) ;
 				} catch (SQLException e) {
 					e.printStackTrace();
 				}
@@ -114,18 +115,18 @@ public class ModeleListeCR extends AbstractTableModel {
 			
 			case 2 : 
 				try {
-					resultat = ModeleGsb.getModeleGsb().getVillePraticien(this.getComptesRendus().get(rowIndex).getPraNum()) ;
+					resultat = ModelGsb.getModele().getVillePraticien(this.comptesRendus.get(rowIndex).getPraNum()) ;
 				} catch (SQLException e) {
 					e.printStackTrace();
 				}
 				break ;
 			
 			case 3 : 
-				resultat = this.getComptesRendus().get(rowIndex).getRapDateVisite() ;
+				resultat = this.comptesRendus.get(rowIndex).getRapDateVisite() ;
 				break ;
 				
 			case 4 :
-				resultat = this.getComptesRendus().get(rowIndex).getRapDateRedaction() ;
+				resultat = this.comptesRendus.get(rowIndex).getRapDateRedaction() ;
 				break ;
 			
 		}

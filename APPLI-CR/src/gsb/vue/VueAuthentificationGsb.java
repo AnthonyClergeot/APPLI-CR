@@ -1,10 +1,8 @@
 package gsb.vue;
 
-import gsb.EtatTentativeConnexionGsb;
 import gsb.controleur.ControleurAuthentificationGsb;
 
 import java.awt.Container;
-import java.awt.Dimension;
 
 import javax.swing.Box;
 import javax.swing.JButton;
@@ -17,103 +15,92 @@ import javax.swing.JTextField;
 
 public class VueAuthentificationGsb extends JDialog {
 	
-	private static final long serialVersionUID = 1L;
-
+	private JLabel labelLogin = new JLabel("login") ;
+	private JLabel labelMdp = new JLabel("mot de passe") ;
+	private JTextField textfieldLogin = new JTextField() ;
+	private JPasswordField passwordfieldMdp = new JPasswordField() ;
+	private JButton buttonConnecter = new JButton("se connecter") ;
+	private JButton buttonAnnuler = new JButton("annuler") ;
+	
 	private ControleurAuthentificationGsb controleur ;
+	private VueGsb vueParent ;
 	
-	private JTextField tfLogin = new JTextField() ;
-	private JPasswordField pfMDP = new JPasswordField() ;
-	private JButton bConnecter = new JButton("Se connecter") ;
-	private JButton bAnnuler = new JButton("Annuler") ;
-	
-	public VueAuthentificationGsb(JFrame vueParente){
-		super(vueParente,"Connexion",true) ;
-		System.out.println("VueAuthentificationGsb::VueAuthentificationGsb()") ;
-		this.creerInterfaceUtilisateur();
+	public VueAuthentificationGsb(VueGsb vueParent) {
+		super() ;
+		
+		System.out.println("VueauthentificationGsb::VueAuthentificationGsb()") ;
+		this.creerInterfaceUtilisateur() ;
 		this.controleur = new ControleurAuthentificationGsb(this) ;
 		this.pack();
-		this.setLocationRelativeTo(vueParente) ;
+		this.setTitle("authentification") ;
+		this.setLocationRelativeTo(vueParent) ;
 		this.setResizable(false) ;
-		this.initialiser() ;
 		this.setVisible(true) ;
+		
+		this.vueParent = vueParent ;
 	}
 	
-	public void initialiser(){
-		System.out.println("VueAuthentificationGsb::initialiser()") ;
-		this.tfLogin.setText("ecadic") ;
-		this.pfMDP.setText("azerty") ;
-		this.controleur.repercuterSaisieChamps() ;
+	public JTextField getTextfieldLogin() {
+		return textfieldLogin;
 	}
-	
-	private void creerInterfaceUtilisateur(){
+
+	public void setTextfieldLogin(JTextField textfieldLogin) {
+		this.textfieldLogin = textfieldLogin;
+	}
+
+	public JPasswordField getPasswordfieldMdp() {
+		return passwordfieldMdp;
+	}
+
+	public void setPasswordfieldMdp(JPasswordField passwordfieldMdp) {
+		this.passwordfieldMdp = passwordfieldMdp;
+	}
+
+	public JButton getButtonConnecter() {
+		return buttonConnecter;
+	}
+
+	public JButton getButtonAnnuler() {
+		return buttonAnnuler;
+	}
+	public VueGsb getVueParente() {
+		return this.vueParent ;
+	}
+
+	public void creerInterfaceUtilisateur() {
+		
 		System.out.println("VueAuthentificationGsb::creerInterfaceUtilisateur()") ;
 		Container conteneur = this.getContentPane() ;
 		
 		Box boxPrincipale = Box.createVerticalBox() ;
 		Box boxChamps = Box.createHorizontalBox() ;
-		Box boxSaisies = Box.createVerticalBox() ;
+		Box boxSaisies = Box.createVerticalBox();
 		Box boxEtiquettes = Box.createVerticalBox() ;
 		Box boxLigne = Box.createHorizontalBox() ;
-		Box boxActions = Box.createHorizontalBox() ;
-		
-		boxEtiquettes.add(new JLabel("Login : ")) ;
-		boxEtiquettes.add(new JLabel("MDP : ")) ;
-		
-		boxSaisies.add(this.tfLogin) ;
-		boxSaisies.add(this.pfMDP) ;
-		
-		boxLigne.add(Box.createHorizontalStrut(5)) ;
-		boxLigne.add(new JSeparator()) ;
-		boxLigne.add(Box.createHorizontalStrut(5)) ;
-		
-		boxActions.add(Box.createHorizontalStrut(5)) ;
-		boxActions.add(this.bConnecter) ;
-		boxActions.add(Box.createHorizontalStrut(5)) ;
-		boxActions.add(this.bAnnuler) ;
-		boxActions.add(Box.createHorizontalStrut(5)) ;
-		
-		boxChamps.add(Box.createHorizontalStrut(5)) ;
-		boxChamps.add(boxEtiquettes) ;
-		boxChamps.add(Box.createHorizontalStrut(5)) ;
-		boxChamps.add(boxSaisies) ;
-		boxChamps.add(Box.createHorizontalStrut(5)) ;
+		Box boxBoutons = Box.createHorizontalBox() ;
 		
 		boxPrincipale.add(Box.createVerticalStrut(5)) ;
 		boxPrincipale.add(boxChamps) ;
+		boxChamps.add(Box.createHorizontalStrut(5)) ;
+		boxChamps.add(boxEtiquettes) ;
+		boxEtiquettes.add(this.labelLogin) ;
+		boxEtiquettes.add(Box.createVerticalStrut(5)) ;
+		boxEtiquettes.add(this.labelMdp) ;
+		boxChamps.add(Box.createHorizontalStrut(5)) ;
+		boxChamps.add(boxSaisies) ;
+		boxSaisies.add(this.textfieldLogin) ;
+		boxSaisies.add(Box.createVerticalStrut(5)) ;
+		boxSaisies.add(this.passwordfieldMdp) ;
+		boxChamps.add(Box.createHorizontalStrut(5)) ;
 		boxPrincipale.add(Box.createVerticalStrut(5)) ;
 		boxPrincipale.add(boxLigne) ;
+		boxLigne.add(new JSeparator()) ;
 		boxPrincipale.add(Box.createVerticalStrut(5)) ;
-		boxPrincipale.add(boxActions) ;
-		boxPrincipale.add(Box.createVerticalStrut(5)) ;
+		boxPrincipale.add(boxBoutons) ;
+		boxBoutons.add(this.buttonAnnuler) ;
+		boxBoutons.add(this.buttonConnecter) ;
 		
 		conteneur.add(boxPrincipale) ;
-		
-		Dimension dimensionBouton = this.bConnecter.getPreferredSize() ;
-		
-		this.bAnnuler.setPreferredSize(dimensionBouton) ;
-		this.bAnnuler.setMaximumSize(dimensionBouton) ;
-		this.bAnnuler.setMinimumSize(dimensionBouton) ;
-	}
-
-	public JTextField getTfLogin() {
-		return tfLogin;
-	}
-
-	public JPasswordField getPfMDP() {
-		return pfMDP;
-	}
-
-	public JButton getbConnecter() {
-		return bConnecter;
-	}
-
-	public JButton getbAnnuler() {
-		return bAnnuler;
-	}
-	
-	public EtatTentativeConnexionGsb getEtatTentativeConnexionGsb(){
-		System.out.println("VueAuthentificationGsb::getEtatTentativeConnexionGsb()") ;
-		return this.controleur.getEtatTentativeConnexionGsb() ;
 	}
 	
 }

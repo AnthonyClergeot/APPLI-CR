@@ -13,7 +13,7 @@ public class ModeleListePraticien extends AbstractTableModel{
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private List<Praticien> lesPraticiens = ModeleGsb.getModeleGsb().getListeDesPraticiensHesitantOrderByCoeffConfiance();
+	private List<Praticien> lesPraticiens = ModelGsb.getModele().getListeDesPraticiensHesitantOrderByCoeffConfiance();
 	private String[] entetes = {"nom","prenom", "nombre de jours depuis la dernière visiste","coefficient confiance", "coefficiant notoriété"} ;
 	
 	public ModeleListePraticien() {
@@ -70,16 +70,16 @@ public class ModeleListePraticien extends AbstractTableModel{
 	}
 	
 	public void sortByCoeffNotoriete(){
-		this.lesPraticiens = ModeleGsb.getModeleGsb().getListeDesPraticiensHesitantOrderByCoeffNotoriete();
+		this.lesPraticiens = ModelGsb.getModele().getListeDesPraticiensHesitantOrderByCoeffNotoriete();
 	}
 	
 	public void sortByCoeffConfiance(){
-		this.lesPraticiens = ModeleGsb.getModeleGsb().getListeDesPraticiensHesitantOrderByCoeffConfiance();
+		this.lesPraticiens = ModelGsb.getModele().getListeDesPraticiensHesitantOrderByCoeffConfiance();
 
 	}
 	
 	public void sortByTempsDepuisDernièreVisite(){
-		this.lesPraticiens = ModeleGsb.getModeleGsb().getListeDesPraticiensHesitantOrderByDepuisDerniereVisite();
+		this.lesPraticiens = ModelGsb.getModele().getListeDesPraticiensHesitantOrderByDepuisDerniereVisite();
 
 	}
 }

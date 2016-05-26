@@ -1,11 +1,16 @@
 package gsb.controleur;
 
 import gsb.EditeurBoutonConsulterCR;
+import gsb.Session;
+import gsb.entites.CompteRendu;
+import gsb.modele.ModelGsb;
 import gsb.techniques.DateFR;
 import gsb.vue.VueGsb;
+import gsb.vue.VueListeCR;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -129,11 +134,23 @@ public class ControleurBoutonConsulterCR implements ActionListener {
 			JOptionPane.showOptionDialog(null, tab, "Date des comptes-rendus", 
 					JOptionPane.OK_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE, null, tab2, null) ;
 		}
-		if (e.getSource() == bValider) {
-			this.vueGsb.changerVue("ListeCR") ;
+		if (e.getSource() == this.bValider) {
+			System.out.println(this.cbAnnees.getSelectedItem() + " " + this.cbMois.getSelectedIndex());
+
+			List<CompteRendu> lesCompteRendus;
+				String matricule = (String) this.table.getModel().getValueAt(this.row, 0);
+				int indexMois = this.cbMois.getSelectedIndex() + 1 ;
+				String mois = "0" + indexMois ;
+				String annee  =  String.valueOf( this.cbAnnees.getSelectedItem() ); 
+				
+				this.vueGsb.creerVueListeCR(matricule, mois, annee);
+				JOptionPane.getRootFrame().dispose();
+				this.vueGsb.changerVue("ListeCR");
+				
+			
 		}
 		if (e.getSource() == bAnnuler) {
-			
+			JOptionPane.getRootFrame().dispose();
 		}
 	}
 

@@ -1,82 +1,141 @@
 package gsb.vue;
 
+import gsb.Session;
 import gsb.controleur.ControleurGsb;
 
 import java.awt.CardLayout;
 import java.awt.Container;
 import java.awt.Dimension;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.sql.SQLException;
 
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 public class VueGsb extends JFrame {
 	
-	private ControleurGsb controleurGsb ;
+	private JFrame frameFenetre ;
 	
-	JMenuBar barreMenus = new JMenuBar() ;
+	private JPanel panelPrincipal ;
+	private JMenuBar menubarBarreMenu = new JMenuBar() ;
 	private JMenu menuFichier = new JMenu("Fichier") ;
-	private JMenu menuConsulter = new JMenu("Consulter") ;
 	private JMenu menuAide = new JMenu("Aide") ;
-	
-	private JMenuItem itemAccueil = new JMenuItem("Accueil") ;
-	private JMenuItem itemConnecter  = new JMenuItem("Se connecter") ;
-	private JMenuItem itemDeconnecter  = new JMenuItem("Se déconnecter") ;
+	private JMenu menuConsulter = new JMenu("Consulter") ;
+	private JMenuItem itemConnecter = new JMenuItem("Se connecter") ;
+	private JMenuItem itemDeconnecter = new JMenuItem("Se déconnecter") ;
 	private JMenuItem itemQuitter = new JMenuItem("Quitter") ;
-	private JMenuItem itemListeVisiteur= new JMenuItem("Liste des visiteurs") ;
-	private JMenuItem itemListePraticienHesitant= new JMenuItem("Liste des praticiens hésitants") ;
-	private JMenuItem itemAide= new JMenuItem("Aide") ;
-	private JMenuItem itemAPropos= new JMenuItem("A propos") ;
+	private JMenuItem itemListeVisiteurs = new JMenuItem("Liste des Visiteurs") ;
+	private JMenuItem itemListePraticienHesitant = new JMenuItem("liste des praticiens hésitants") ;
+	private JMenuItem itemAide = new JMenuItem("Aide") ;
+	private JMenuItem itemAPropos = new JMenuItem("A propos" );
+	private JPanel vuePraticienHesitant ;
+	private JPanel vueListeVisiteurs;
+	private JPanel vueListeCR;
 	
-	private CardLayout clPanneaux ;
-	private Container conteneur ;
+	private CardLayout clPanneau = new CardLayout(5, 5) ;
+	private Container conteneur = this.getContentPane() ;
 	
-	private VueAccueilGsb Accueil = new VueAccueilGsb() ;
-	private JPanel vuePraticienHesitant = new VuePraticienHesitant(this) ; ;
-//	private VueListeVisiteurs ListeVisiteurs = new VueListeVisiteurs(this) ;
-//	private VueListeCR ListeCR = new VueListeCR() ;
+	private ControleurGsb controleur ;
+	private Session session = null ;
 	
 	public VueGsb() {
-		super();
-		System.out.println("VuePrincipale::VuePrincipale()") ;
+		super() ;
+		System.out.println("VueGsb::VueGsb()") ;
 		
-		this.setTitle("APPLI-CR") ;
-		this.setSize(1300,600) ; 
+		this.controleur = new ControleurGsb(this) ;
+		
+		this.setJMenuBar(creerBarreMenu()) ;
+		this.setMenuDeconnecte();
+	
+		
+		JPanel vueAccueil = new JPanel() ;
+		vueAccueil.add(new JLabel("Accueil")) ;
+		vuePraticienHesitant = new VuePraticienHesitant(this) ;
+		
+		
+		this.conteneur.setLayout(clPanneau) ;
+		this.conteneur.add(vueAccueil, "VueAccueil") ;
+		this.conteneur.add(vuePraticienHesitant, "VuePraticienHesitant") ;
+		clPanneau.show(conteneur, "vueAccueil");
+		
+		this.pack();
+		this.setSize(1400, 600) ;
 		this.setLocationRelativeTo(null) ;
-		this.setDefaultCloseOperation(EXIT_ON_CLOSE) ;
-		
-		this.creerBarreMenus() ;
-		this.setMenusDeconnecte();
 		this.setVisible(true) ;
-		
-		this.controleurGsb = new ControleurGsb(this) ;
-		
-		clPanneaux = new CardLayout(5 , 5) ;
-		conteneur = this.getContentPane() ;
-		conteneur.setLayout(clPanneaux) ;
-		
-		conteneur.add(Accueil, "Accueil") ;
-		conteneur.add(vuePraticienHesitant, "VuePraticienHesitant") ;
-//		conteneur.add(ListeVisiteurs, "ListeVisiteurs") ;
-//		conteneur.add(ListeCR, "ListeCR") ;
-		
-		clPanneaux.show(conteneur, "Accueil") ;
+		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 	}
 	
-	public ControleurGsb getControleurGsb() {
-		return this.controleurGsb ;
+	public JPanel getVuePraticienHesitant() {
+		return vuePraticienHesitant;
 	}
 
-	public JMenuItem getItemAccueil() {
-		return itemAccueil;
+	public void setVuePraticienHesitant(JPanel vuePraticienHesitant) {
+		this.vuePraticienHesitant = vuePraticienHesitant;
 	}
+
+	public JMenuBar creerBarreMenu() {
+		
+		menuFichier.add(itemConnecter) ;
+		menuFichier.add(itemDeconnecter) ;
+		menuFichier.add(itemQuitter) ;
+		
+		menuConsulter.add(itemListePraticienHesitant) ;
+		menuConsulter.add(itemListeVisiteurs) ;
+		
+		menuAide.add(itemAide) ;
+		menuAide.add(itemAPropos) ;
+		
+		menubarBarreMenu.add(menuFichier) ;
+		menubarBarreMenu.add(menuConsulter) ;
+		menubarBarreMenu.add(menuAide) ;
+		
+		return menubarBarreMenu ;
+	}
+	public void setMenuDeconnecte() {
+		
+		System.out.println("VueGsb::setMenuDeconnecte") ;
+		this.menuConsulter.setEnabled(false) ;
+		this.itemDeconnecter.setEnabled(false) ;
+		this.itemConnecter.setEnabled(true) ;
+		
+	}
+	public void setMenuConnecte() {
+		
+		System.out.println("VueGsb::setMenuConnecte") ;
+		
+		this.itemConnecter.setEnabled(false) ;
+		this.itemDeconnecter.setEnabled(true) ;
+		this.menuConsulter.setEnabled(true) ;
+		vueListeVisiteurs = new VueListeVisiteurs(this) ;
+		
+		this.conteneur.add(vueListeVisiteurs, "VueListeVsiteurs") ;
+		
+	}
+	
+	public JPanel getVueListeCR() {
+		return vueListeCR;
+	}
+
+	public void setVueListeCR(JPanel vueListeCR) {
+		this.vueListeCR = vueListeCR;
+	}
+
+	public void changerVue(String vue) {
+		System.out.println("VueGsb::changerVue("+ vue +")") ;
+		this.clPanneau.show(conteneur ,vue) ;
+	}
+	
+	public JFrame getFrameFenetre() {
+		return frameFenetre;
+	}
+
+	public JPanel getPanelPrincipal() {
+		return panelPrincipal;
+	}
+
 
 	public JMenuItem getItemConnecter() {
 		return itemConnecter;
@@ -90,8 +149,8 @@ public class VueGsb extends JFrame {
 		return itemQuitter;
 	}
 
-	public JMenuItem getItemListeVisiteur() {
-		return itemListeVisiteur;
+	public JMenuItem getItemListeVisiteurs() {
+		return itemListeVisiteurs;
 	}
 
 	public JMenuItem getItemListePraticienHesitant() {
@@ -106,79 +165,16 @@ public class VueGsb extends JFrame {
 		return itemAPropos;
 	}
 	
-	public Container getConteneur() {
-		return conteneur;
-	}
-
-	public CardLayout getClPanneaux() {
-		return clPanneaux;
+	public void setSession(Session session){
+		this.session = session ;
 	}
 	
-	public VueGsb getVueGsb() {
-		return this ;
+	public Session getSession() {
+		return this.session ;
 	}
-
-	public void setConteneur(Container conteneur) {
-		this.conteneur = conteneur;
+	public void creerVueListeCR(String matricule, String mois, String annee){
+		System.out.println("VueGsb::creerVueListeCR()") ;
+		this.vueListeCR  = new VueListeCR(this, matricule, mois, annee);
+		this.conteneur.add(this.vueListeCR, "ListeCR");
 	}
-
-	public void changerVue(String panel) {
-		System.out.println("VuePrincipale::changerVue()") ;
-		clPanneaux.show(conteneur, panel) ;
-	}
-	
-	public JPanel getVuePraticienHesitant() {
-		return vuePraticienHesitant;
-	}
-
-	public void setVuePraticienHesitant(JPanel vuePraticienHesitant) {
-		this.vuePraticienHesitant = vuePraticienHesitant;
-	}
-	
-	public void setMenusConnecte(){
-		System.out.println("VuePrincipale::setMenusConnecte()") ;
-		
-		this.itemAccueil.setEnabled(true) ;
-		this.itemDeconnecter.setEnabled(true) ;
-		this.itemConnecter.setEnabled(false) ;
-		this.menuConsulter.setEnabled(true) ;
-		this.itemListeVisiteur.setEnabled(true) ;
-		this.itemListePraticienHesitant.setEnabled(true) ;
-	}
-	
-	public void setMenusDeconnecte(){
-		System.out.println("VuePrincipale::setMenusDeconnecte()") ;
-		
-		this.itemAccueil.setEnabled(true) ;
-		this.itemDeconnecter.setEnabled(false) ;
-		this.itemConnecter.setEnabled(true) ;
-		this.menuConsulter.setEnabled(false) ;
-		this.itemListeVisiteur.setEnabled(false) ;
-		this.itemListePraticienHesitant.setEnabled(false) ;
-	}
-	
-	private void creerBarreMenus(){
-		System.out.println("VuePrincipale::creerBarreMenus()") ;
-		
-		menuFichier.add(this.itemAccueil) ;
-		menuFichier.addSeparator() ;
-		menuFichier.add(this.itemConnecter) ;
-		menuFichier.add(this.itemDeconnecter) ;
-		menuFichier.addSeparator() ;
-		menuFichier.add(this.itemQuitter) ;
-		
-		menuConsulter.add(this.itemListeVisiteur) ;
-		menuConsulter.add(this.itemListePraticienHesitant) ;
-		
-		menuAide.add(this.itemAide) ;
-		menuAide.add(this.itemAPropos) ;
-		
-		barreMenus.add(menuFichier) ;
-		barreMenus.add(menuConsulter) ;
-		barreMenus.add(menuAide) ;
-		
-		this.setJMenuBar(barreMenus) ;
-		
-	}
-	
 }
